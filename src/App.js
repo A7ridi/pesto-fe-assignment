@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import app from "./firebase";
+import Router from "./components/routes/Routes";
+import { BrowserRouter } from "react-router-dom";
+import { Box, CircularProgress } from "@mui/material";
 
 function App() {
+  const auth = getAuth(app);
+  const [user, loading, error] = useAuthState(auth);
+  const isLoggedInUser = user !== null && !loading;
+
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "300px",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+
+  if (error) {
+    return <div>Something went wrong!!!</div>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Router isLoggedInUser={isLoggedInUser} user={user} />
+    </BrowserRouter>
   );
 }
 
