@@ -23,10 +23,13 @@ export default function Login() {
   const auth = getAuth(app);
   const [loginError, setLoginError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const [switchType, setSwitchType] = React.useState(false);
+  const [switchType, setSwitchType] = React.useState(true);
   const navigate = useNavigate();
 
-  const toggleSwitch = () => setSwitchType(!switchType);
+  const toggleSwitch = () => {
+    setSwitchType(!switchType);
+    setLoginError("");
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -68,9 +71,11 @@ export default function Login() {
       if (code === "auth/user-not-found") errorMessage = "User not found";
       else if (
         code === "auth/invalid-login-credentials" ||
-        code === "auth/email-already-in-use"
+        code === "auth/invalid-credential"
       )
         errorMessage = "Invalid login credentials";
+      else if (code === "auth/email-already-in-use")
+        errorMessage = "User exists already, try login";
       else errorMessage = "Login failed";
 
       setLoginError(errorMessage);

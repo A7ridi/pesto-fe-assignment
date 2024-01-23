@@ -5,19 +5,26 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
+const container = {
+  display: "flex",
+  alignItems: "flex-start",
+  gap: 0,
+  flexDirection: "column",
+  marginTop: 1,
+  "@media (min-width: 600px)": {
+    flexDirection: "row",
+    gap: 3,
+    alignItems: "center",
+    marginTop: 0.5,
+  },
+};
+
 export default function StatusRadio({ selectedStatus, setSelectedStatus }) {
   const handleStatusChange = (event) => {
     setSelectedStatus(event.target.value);
   };
   return (
-    <FormControl
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 3,
-      }}
-    >
+    <FormControl sx={container}>
       <FormLabel id="demo-radio-buttons-group-label">Status</FormLabel>
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"

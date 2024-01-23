@@ -13,8 +13,12 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { collection, getFirestore } from "firebase/firestore";
 import app from "../../firebase";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = ({ user }) => {
+  const auth = getAuth(app);
+  const navigate = useNavigate();
   const [filter, setFilter] = useState("All");
   const [todos, loading] = useCollection(
     collection(getFirestore(app), "Todos"),
@@ -22,7 +26,11 @@ const Dashboard = ({ user }) => {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   );
-  console.log({ user });
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate("/");
+  };
 
   const filteredTasks =
     filter === "All"
@@ -45,13 +53,13 @@ const Dashboard = ({ user }) => {
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
             Hi, {user?.email ?? ""}
           </Typography>
-          <Button variant="outlined" color="error">
+          <Button onClick={handleLogout} variant="outlined" color="error">
             <LogoutIcon />
             Logout
           </Button>
         </Box>
         <Typography variant="body">Task Management Application</Typography>
-        <TaskForm />
+        <TaskForm user={user} />
       </Box>
 
       <Box sx={{ marginTop: 2 }}>

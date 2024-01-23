@@ -4,6 +4,20 @@ import { firebaseDB } from "../../firebase";
 import { useState } from "react";
 import StatusRadio from "./StatusRadio";
 
+const container = {
+  maxHeight: "400px",
+  overflowY: "auto",
+  border: "1px solid #ccc",
+  marginTop: 1,
+  borderRadius: "12px",
+  paddingX: 4,
+  paddingY: 3,
+  maxWidth: "80%",
+  "@media (min-width: 600px)": {
+    maxWidth: "50%",
+  },
+};
+
 const TaskForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -29,18 +43,7 @@ const TaskForm = () => {
   };
 
   return (
-    <Paper
-      elevation={1}
-      sx={{
-        maxHeight: "400px",
-        overflowY: "auto",
-        border: "1px solid #ccc",
-        marginTop: 1,
-        borderRadius: "12px",
-        paddingX: 4,
-        paddingY: 3,
-      }}
-    >
+    <Paper elevation={1} sx={container}>
       <FormLabel onSubmit={handleSubmit}>
         <TextField
           label="Title"
